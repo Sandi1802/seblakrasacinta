@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - SEBLAK Cinta Rasa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+  <style>
+    .menu-overlay {
+      transition: all 0.3s ease-in-out;
+    }
+
+    .hamburger-line {
+      transition: all 0.3s ease-in-out;
+    }
+
+    .menu-open .hamburger-top {
+      transform: rotate(45deg) translateY(6px);
+    }
+
+    .menu-open .hamburger-middle {
+      opacity: 0;
+    }
+
+    .menu-open .hamburger-bottom {
+      transform: rotate(-45deg) translateY(-6px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 flex items-center justify-between p-4 bg-white border-b shadow-sm">
+    <a href="/" class="text-xl font-bold z-10">
+      <span class="text-black">SEBLAK</span>
+      <span class="text-red-600">Cinta Rasa</span>
+    </a>
+
+    <!-- Hamburger Menu Button -->
+    <button
+      id="menu-btn"
+      class="lg:hidden flex flex-col justify-center items-center w-8 h-8 z-20"
+    >
+      <span
+        class="hamburger-line w-6 h-0.5 bg-black mb-1 hamburger-top"
+      ></span>
+      <span
+        class="hamburger-line w-6 h-0.5 bg-black mb-1 hamburger-middle"
+      ></span>
+      <span class="hamburger-line w-6 h-0.5 bg-black hamburger-bottom"></span>
+    </button>
+
+    <!-- Mobile Menu Overlay -->
+    <div
+      id="menu-overlay"
+      class="menu-overlay fixed inset-0 bg-black bg-opacity-50 z-10 hidden"
+    >
+      <nav
+        class="fixed right-0 top-0 h-full w-64 bg-white transform translate-x-full transition-transform duration-300 ease-in-out"
+      >
+        <div class="flex flex-col p-8 space-y-4">
+          <a
+            href="/"
+            class="hover:text-red-600 text-lg flex items-center gap-2"
+          >
+            <i class="fas fa-home"></i> Home
+          </a>
+          <a
+            href="/produk"
+            class="hover:text-red-600 text-lg flex items-center gap-2"
+          >
+            <i class="fas fa-utensils"></i> Product
+          </a>
+          <!-- Icon Cart di Navbar -->
+          <!-- Icon Cart di Navbar -->
+          <a
+            href="/keranjang"
+            class="category-btn text-red-600 px-4 py-2 rounded-full bg-red-50 flex items-center gap-2">
+            <i class="fas fa-shopping-cart"></i> Cart
+            <span
+              id="cart-count-navbar"
+              class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden"
+            >
+            </span>
+          </a>
+
+          <a
+            href="/lokasi"
+            class="hover:text-red-600 text-lg flex items-center gap-2"
+          >
+            <i class="fas fa-map-marker-alt"></i> Location
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden lg:flex gap-6">
+      <a href="/" class="hover:text-red-600 flex items-center gap-2">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a href="/produk" class="hover:text-red-600 flex items-center gap-2">
+        <i class="fas fa-utensils"></i> Product
+      </a>
+      <!-- Icon Cart di Navbar -->
+      <!-- Icon Cart di Navbar -->
+      <a
+        href="/keranjang"
+        class="category-btn text-red-600 px-4 py-2 rounded-full bg-red-50 flex items-center gap-2">
+        <i class="fas fa-shopping-cart"></i> Cart
+        <span
+          id="cart-count-navbar"
+          class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden"
+        >
+        </span>
+      </a>
+
+      <a href="/lokasi" class="hover:text-red-600 flex items-center gap-2">
+        <i class="fas fa-map-marker-alt"></i> Location
+      </a>
+    </nav>
+  </header>
+
+   <!-- Main Content -->
+   <main class="flex-1 max-w-6xl mx-auto w-full px-4 py-8" id="cart-container">
+    <!-- Cart Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">Keranjang Belanja</h1>
+        <p class="text-gray-600 mt-2" id="cart-count">0 items dalam keranjang</p>
+    </div>
+
+    <!-- Cart Content -->
+    <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+        <!-- Cart Items -->
+        <div class="lg:col-span-8">
+            <div class="space-y-4" id="cart-items">
+                <!-- Cart items will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="lg:col-span-4 mt-8 lg:mt-0">
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Ringkasan Pesanan</h2>
+                <div class="space-y-4">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Subtotal</span>
+                        <span class="font-medium" id="subtotal">Rp 0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Biaya Layanan</span>
+                        <span class="font-medium" id="service-fee">Rp 2.000</span>
+                    </div>
+                    <div class="border-t pt-4">
+                        <div class="flex justify-between font-medium text-lg">
+                            <span>Total</span>
+                            <span id="total">Rp 2.000</span>
+                        </div>
+                    </div>
+                    <button onclick="window.location.href='form'" class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors">
+                        Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="mt-8 space-y-4">
+    <div class="text-center px-4">
+      <h3 class="font-bold flex items-center justify-center gap-2">
+        <i class="fas fa-clock text-red-600"></i> Jam Operasional: 08:00-22:00
+      </h3>
+    </div>
+    <div class="text-center px-4">
+      <h3 class="font-bold mb-4 flex items-center justify-center gap-2">
+        <i class="fas fa-phone text-red-600"></i> HUBUNGI KAMI
+      </h3>
+      <div class="flex justify-center gap-4">
+        <a
+          href="#"
+          class="hover:opacity-75 transform hover:scale-110 transition-transform duration-300 bg-green-500 p-3 rounded-full text-white"
+        >
+          <i class="fab fa-whatsapp text-xl"></i>
+        </a>
+        <a
+        href="https://www.tiktok.com/@seblakcintarasa?_t=ZS-8sYnsE2Mr6G&_r=1"
+        class="hover:opacity-75 transform hover:scale-110 transition-transform duration-300 bg-black p-3 rounded-full text-white"
+      >
+        <i class="fab fa-tiktok text-xl"></i>
+      </a>
+      <a
+        href="https://www.instagram.com/seblakcintarasa?igsh=MXdvaGhsZzVnZDQ0Mg%3D%3D&utm_source=qr"
+        class="hover:opacity-75 transform hover:scale-110 transition-transform duration-300 bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full text-white"
+      >
+        <i class="fab fa-instagram text-xl"></i>
+      </a>
+      </div>
+    </div>
+    <div class="bg-red-900 text-white p-4 text-center">
+      <p class="flex items-center justify-center gap-2">
+        <i class="far fa-copyright"></i> Copyright@2024 seblak cinta rasa
+      </p>
+    </div>
+  </footer>
+
+<!-- Script -->
+<script>
+   // Hamburger menu functionality
+   const menuBtn = document.getElementById("menu-btn");
+   const menuOverlay = document.getElementById("menu-overlay");
+   const nav = menuOverlay.querySelector("nav");
+   let isMenuOpen = false;
+
+   menuBtn.addEventListener("click", () => {
+     isMenuOpen = !isMenuOpen;
+
+     if (isMenuOpen) {
+       menuBtn.classList.add("menu-open");
+       menuOverlay.classList.remove("hidden");
+       setTimeout(() => {
+         nav.style.transform = "translateX(0)";
+       }, 10);
+     } else {
+       menuBtn.classList.remove("menu-open");
+       nav.style.transform = "translateX(100%)";
+       setTimeout(() => {
+         menuOverlay.classList.add("hidden");
+       }, 300);
+     }
+   });
+
+   // Close menu when clicking overlay
+   menuOverlay.addEventListener("click", (e) => {
+     if (e.target === menuOverlay) {
+       menuBtn.click();
+     }
+   });
+  // Ambil elemen DOM
+  const cartItemsContainer = document.getElementById('cart-items'); // Container item keranjang
+  const cartCountElement = document.getElementById('cart-count'); // Jumlah item di header
+  const subtotalElement = document.getElementById('subtotal'); // Subtotal
+  const totalElement = document.getElementById('total'); // Total dengan biaya layanan
+  const serviceFee = 2000; // Biaya layanan tetap
+
+  // Fungsi untuk memformat harga
+  function formatPrice(price) {
+      return `Rp ${price.toLocaleString('id-ID')}`;
+  }
+
+  // Fungsi untuk memperbarui keranjang belanja
+  function updateCart() {
+      // Ambil data dari localStorage
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      // Jika keranjang kosong, arahkan ke halaman produk
+      if (cart.length === 0) {
+          alert('Keranjang belanja Anda kosong. Silakan tambahkan produk terlebih dahulu.');
+          window.location.href = '/produk';
+          return;
+      }
+
+      // Bersihkan kontainer item keranjang
+      cartItemsContainer.innerHTML = '';
+
+      // Render setiap item dalam keranjang
+      cart.forEach((item, index) => {
+          const cartItem = document.createElement('div');
+          cartItem.className = 'bg-white rounded-lg p-4 shadow-sm flex gap-4 items-center';
+          cartItem.innerHTML = `
+              <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">
+              <div class="flex-1">
+                  <h3 class="font-medium">${item.name}</h3>
+                  <p>Jumlah: ${item.quantity}</p>
+                  <p class="text-red-600 font-bold">${formatPrice(item.price * item.quantity)}</p>
+              </div>
+              <button onclick="removeItem(${index})" class="text-red-600 hover:text-red-800">
+                  <i class="fas fa-trash"></i>
+              </button>
+          `;
+          cartItemsContainer.appendChild(cartItem);
+      });
+
+      // Perbarui subtotal dan total
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      subtotalElement.textContent = formatPrice(subtotal);
+      totalElement.textContent = formatPrice(subtotal + serviceFee);
+
+      // Perbarui jumlah item di header
+      cartCountElement.textContent = `${cart.length} items dalam keranjang`;
+  }
+
+  // Fungsi untuk menghapus item dari keranjang
+  function removeItem(index) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.splice(index, 1); // Hapus item berdasarkan index
+      localStorage.setItem('cart', JSON.stringify(cart)); // Simpan perubahan
+      updateCart(); // Perbarui keranjang
+  }
+
+  // Jalankan fungsi saat halaman dimuat
+  document.addEventListener('DOMContentLoaded', updateCart);
+</script>
+
+</body>
+</html>

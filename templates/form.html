@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEBLAK Cinta Rasa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      .menu-overlay {
+        transition: all 0.3s ease-in-out;
+      }
+
+      .hamburger-line {
+        transition: all 0.3s ease-in-out;
+      }
+
+      .menu-open .hamburger-top {
+        transform: rotate(45deg) translateY(6px);
+      }
+
+      .menu-open .hamburger-middle {
+        opacity: 0;
+      }
+
+      .menu-open .hamburger-bottom {
+        transform: rotate(-45deg) translateY(-6px);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <!-- Header -->
+
+
+    <main class="flex-1">
+<div class="max-w-2xl mx-auto p-4 sm:p-6">
+    <!-- Bagian Ringkasan Pesanan -->
+    <div id="order-summary" class="mb-8 border rounded-lg p-4">
+        <h2 class="font-medium text-lg mb-4">Ringkasan Pesanan Anda</h2>
+        <div id="cart-items-summary" class="space-y-2 mb-4">
+            <!-- Daftar item keranjang akan ditampilkan di sini -->
+        </div>
+        <div class="border-t pt-4">
+            <div class="flex justify-between items-center">
+                <span>Subtotal Pesanan</span>
+                <span id="subtotal-summary"></span>
+            </div>
+            <div class="flex justify-between items-center mt-2">
+                <span>Biaya Layanan</span>
+                <span id="service-fee-summary">Rp 2.000</span>
+            </div>
+            <div class="flex justify-between items-center mt-2 font-bold">
+                <span>Total Pembayaran</span>
+                <span id="total-summary"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="max-w-2xl mx-auto p-4 sm:p-6">
+  <h1 class="text-xl sm:text-2xl text-red-600 text-center font-bold mb-6 sm:mb-8">Isi format Pesanan</h1>
+  
+  <form id="orderForm" class="space-y-4 sm:space-y-6">
+      <div class="grid gap-2">
+          <label for="nama" class="text-sm font-medium">Nama :</label>
+          <input id="nama" name="nama" type="text" placeholder="Masukkan nama" required
+              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-600">
+      </div>
+      
+      <div class="grid gap-2">
+          <label for="whatsapp" class="text-sm font-medium">No Whatsapp :</label>
+          <input id="whatsapp" name="whatsapp" type="tel" placeholder="Masukkan nomor WhatsApp" required
+              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-600">
+      </div>
+      
+      <div class="grid gap-2">
+          <label for="pedas" class="text-sm font-medium">Level Pedas :</label>
+          <input id="pedas" name="pedas" type="number" min="1" max="5" placeholder="1-5" required
+              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-600">
+      </div>
+      
+      <div class="grid gap-2">
+          <label class="text-sm font-medium">Manis / Gurih :</label>
+          <div class="flex space-x-4">
+              <div class="flex items-center space-x-2">
+                  <input type="radio" name="rasa" value="manis" id="manis" checked
+                      class="w-4 h-4 text-red-600 focus:ring-red-600">
+                  <label for="manis">Manis</label>
+              </div>
+              <div class="flex items-center space-x-2">
+                  <input type="radio" name="rasa" value="gurih" id="gurih"
+                      class="w-4 h-4 text-red-600 focus:ring-red-600">
+                  <label for="gurih">Gurih</label>
+              </div>
+          </div>
+      </div>
+      
+      <div class="grid gap-2">
+          <label for="catatan" class="text-sm font-medium">Catatan :</label>
+          <textarea id="catatan" name="catatan" placeholder="Tambahan catatan pesanan secara detail terkait makanan yang anda pesan..."
+              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 min-h-[100px]"></textarea>
+      </div>
+
+      <div class="space-y-4">
+          <h2 class="text-lg sm:text-xl text-red-600 font-bold">Pilih Metode Pembayaran</h2>
+          <div class="grid grid-cols-2 gap-4">
+              <button type="button" onclick="selectPayment('qris')" id="qrisButton"
+                  class="flex flex-col sm:flex-row items-center justify-center gap-2 p-3 sm:p-4 border rounded-lg hover:bg-gray-50">
+                  <i class="fas fa-qrcode w-6 h-6"></i>
+                  <span>QRis</span>
+              </button>
+              <button type="button" onclick="selectPayment('tunai')" id="tunaiButton"
+                  class="flex flex-col sm:flex-row items-center justify-center gap-2 p-3 sm:p-4 border rounded-lg hover:bg-gray-50">
+                  <i class="fas fa-wallet w-6 h-6"></i>
+                  <span>Tunai</span>
+              </button>
+          </div>
+      </div>
+
+      <!-- Ganti bagian uploadSection yang lama dengan kode ini -->
+<div id="uploadSection" class="hidden space-y-6">
+  <!-- QRIS Image Section -->
+  <div class="text-center space-y-4">
+      <h3 class="font-medium">Scan QRIS untuk Pembayaran</h3>
+      <img
+      src="{{ url_for('static', filename='/images/qr.png') }}"
+      alt="Qrs"
+      class="object-cover w-full h-full flex-shrink-0"
+    />
+      <p class="text-sm text-gray-600">A/N SEBLAK Cinta Rasa</p>
+  </div>
+  
+  <!-- Upload Bukti Section -->
+  <div class="grid gap-2">
+      <label class="text-sm font-medium">Upload Bukti Pembayaran :</label>
+      <div class="flex items-center justify-center w-full">
+          <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+              <div class="flex flex-col items-center justify-center p-4">
+                  <i class="fas fa-upload mb-2 text-gray-400"></i>
+                  <p class="text-sm text-gray-500"><span class="font-semibold">Klik untuk upload bukti pembayaran</span></p>
+                  <p class="text-xs text-gray-500">PNG, JPG atau PDF (MAX. 2MB)</p>
+              </div>
+              <input id="dropzone-file" type="file" class="hidden" accept=".png,.jpg,.jpeg,.pdf">
+          </label>
+      </div>
+      <p id="selected-file" class="text-sm text-gray-600 mt-2"></p>
+  </div>
+</div>
+
+      <div class="mt-6 sm:mt-8">
+          <button type="submit" 
+              class="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition-colors">
+              Kirim Pesanan
+          </button>
+      </div>
+  </form>
+</div>
+</main>
+<script>
+
+  document.getElementById('orderForm').addEventListener('submit', function(e) {
+    if (document.getElementById('uploadSection').classList.contains('hidden')) return;
+    
+    const bukti = document.getElementById('dropzone-file').files[0];
+    if (!bukti) {
+        alert('Harap unggah bukti pembayaran untuk melanjutkan.');
+        e.preventDefault();
+        return;
+    }
+});
+
+  document.getElementById('dropzone-file').addEventListener('change', function(e) {
+    const fileName = e.target.files[0]?.name;
+    if (fileName) {
+        document.getElementById('selected-file').textContent = `File terpilih: ${fileName}`;
+    }
+});
+function formatHarga(harga) {
+    return `Rp ${harga.toLocaleString('id-ID')}`;
+}
+
+function tampilkanRingkasanKeranjang() {
+    const keranjang = JSON.parse(localStorage.getItem('cart')) || [];
+    const containerItem = document.getElementById('cart-items-summary');
+    const biayaLayanan = 2000;
+    
+    // Bersihkan item yang ada
+    containerItem.innerHTML = '';
+    
+    // Tampilkan item keranjang
+    keranjang.forEach(item => {
+        const elementItem = document.createElement('div');
+        elementItem.className = 'flex justify-between items-center';
+        elementItem.innerHTML = `
+            <span>${item.name} x ${item.quantity}</span>
+            <span>${formatHarga(item.price * item.quantity)}</span>
+        `;
+        containerItem.appendChild(elementItem);
+    });
+    
+    // Hitung dan tampilkan total
+    const subtotal = keranjang.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const total = subtotal + biayaLayanan;
+    
+    document.getElementById('subtotal-summary').textContent = formatHarga(subtotal);
+    document.getElementById('total-summary').textContent = formatHarga(total);
+}
+
+// Jalankan fungsi saat halaman dimuat
+document.addEventListener('DOMContentLoaded', tampilkanRingkasanKeranjang);
+</script>
+    <!-- Footer -->
+    <footer class="mt-8 space-y-4">
+        <div class="text-center px-4">
+            <h3 class="font-bold flex items-center justify-center gap-2">
+                <i class="fas fa-clock text-red-600"></i> Jam Operasional: 08:00-22:00
+            </h3>
+        </div>
+        <div class="text-center px-4">
+            <h3 class="font-bold mb-4 flex items-center justify-center gap-2">
+                <i class="fas fa-phone text-red-600"></i> HUBUNGI KAMI
+            </h3>
+            <div class="flex justify-center gap-4">
+                <a href="#" class="hover:opacity-75 transform hover:scale-110 transition-transform duration-300 bg-green-500 p-3 rounded-full text-white">
+                    <i class="fab fa-whatsapp text-xl"></i>
+                </a>
+                <a
+                href="https://www.tiktok.com/@seblakcintarasa?_t=ZS-8sYnsE2Mr6G&_r=1"
+                class="hover:opacity-75 transform hover:scale-110 transition-transform duration-300 bg-black p-3 rounded-full text-white"
+              >
+                <i class="fab fa-tiktok text-xl"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/seblakcintarasa?igsh=MXdvaGhsZzVnZDQ0Mg%3D%3D&utm_source=qr"
+                class="hover:opacity-75 transform hover:scale-110 transition-transform duration-300 bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full text-white"
+              >
+                <i class="fab fa-instagram text-xl"></i>
+              </a>
+            </div>
+        </div>
+        <div class="bg-red-900 text-white p-4 text-center">
+            <p class="flex items-center justify-center gap-2">
+                <i class="far fa-copyright"></i> Copyright@2024 seblak cinta rasa
+            </p>
+        </div>
+    </footer>
+
+    <script>
+      function handleFileUpload(event) {
+        const file = event.target.files[0];
+        const placeholder = document.getElementById('upload-placeholder');
+        const preview = document.getElementById('preview-image');
+        
+        if (file) {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                }
+                reader.readAsDataURL(file);
+            } else if (file.type === 'application/pdf') {
+                placeholder.innerHTML = `
+                    <i class="fas fa-file-pdf w-8 h-8 text-red-600"></i>
+                    <p class="mt-2 text-sm text-gray-500">PDF terunggah: ${file.name}</p>
+                `;
+                preview.classList.add('hidden');
+            }
+            
+            localStorage.setItem('buktiPembayaran', file.name);
+        }
+    }
+    
+// Payment method selection
+function selectPayment(method) {
+    const qrisButton = document.getElementById('qrisButton');
+    const tunaiButton = document.getElementById('tunaiButton');
+    const uploadSection = document.getElementById('uploadSection');
+    
+    qrisButton.classList.remove('bg-gray-100', 'border-red-600');
+    tunaiButton.classList.remove('bg-gray-100', 'border-red-600');
+    
+    if (method === 'qris') {
+        qrisButton.classList.add('bg-gray-100', 'border-red-600');
+        uploadSection.classList.remove('hidden');
+    } else if (method === 'tunai') {
+        tunaiButton.classList.add('bg-gray-100', 'border-red-600');
+        uploadSection.classList.add('hidden');
+    }
+}
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

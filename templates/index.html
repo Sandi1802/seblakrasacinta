@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEBLAK Cinta Rasa</title>
+    <link href="output.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      .menu-overlay {
+        transition: all 0.3s ease-in-out;
+      }
+
+      .hamburger-line {
+        transition: all 0.3s ease-in-out;
+      }
+
+      .menu-open .hamburger-top {
+        transform: rotate(45deg) translateY(6px);
+      }
+
+      .menu-open .hamburger-middle {
+        opacity: 0;
+      }
+
+      .menu-open .hamburger-bottom {
+        transform: rotate(-45deg) translateY(-6px);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 flex items-center justify-between p-4 bg-white border-b shadow-sm">
+      <a href="/" class="text-xl font-bold z-10">
+        <span class="text-black">SEBLAK</span>
+        <span class="text-red-600">Cinta Rasa</span>
+      </a>
+
+      <!-- Hamburger Menu Button -->
+       
+      <button
+        id="menu-btn"
+        class="lg:hidden flex flex-col justify-center items-center w-8 h-8 z-20"
+      >
+        <span
+          class="hamburger-line w-6 h-0.5 bg-black mb-1 hamburger-top"
+        ></span>
+        <span
+          class="hamburger-line w-6 h-0.5 bg-black mb-1 hamburger-middle"
+        ></span>
+        <span class="hamburger-line w-6 h-0.5 bg-black hamburger-bottom"></span>
+      </button>
+
+      <!-- Mobile Menu Overlay -->
+      <div
+        id="menu-overlay"
+        class="menu-overlay fixed inset-0 bg-black bg-opacity-50 z-10 hidden"
+      >
+        <nav
+          class="fixed right-0 top-0 h-full w-64 bg-white transform translate-x-full transition-transform duration-300 ease-in-out"
+        >
+          <div class="flex flex-col p-8 space-y-4">
+            <a
+              href="/"
+              class="category-btn text-red-600 px-4 py-2 rounded-full  ">
+              <i class="fas fa-home"></i> Home
+            </a>
+            <a
+              href="/produk"
+              class="hover:text-red-600 text-lg flex items-center gap-2"
+            >
+              <i class="fas fa-utensils"></i> Product
+            </a>
+            <!-- Icon Cart di Navbar -->
+            <!-- Icon Cart di Navbar -->
+            <a
+              href="/keranjang"
+              class="hover:text-red-600 flex items-center gap-2 relative"
+            >
+              <i class="fas fa-shopping-cart"></i> Cart
+              <span
+                id="cart-count-navbar"
+                class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden"
+              >
+              </span>
+            </a>
+
+            <a
+              href="/lokasi"
+              class="hover:text-red-600 text-lg flex items-center gap-2"
+            >
+              <i class="fas fa-map-marker-alt"></i> Location
+            </a>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex gap-6">
+        <a href="/" id="popular" class="category-btn text-red-600 px-4 py-2 rounded-full ">
+          <i class="fas fa-home"></i> Home
+        </a>
+        <a href="/produk" class="hover:text-red-600 flex items-center gap-2">
+          <i class="fas fa-utensils"></i> Product
+        </a>
+        <!-- Icon Cart di Navbar -->
+        <!-- Icon Cart di Navbar -->
+        <a
+          href="/keranjang"
+          class="hover:text-red-600 flex items-center gap-2 relative"
+        >
+          <i class="fas fa-shopping-cart"></i> Cart
+          <span
+            id="cart-count-navbar"
+            class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden"
+          >
+          </span>
+        </a>
+
+        <a href="/lokasi" class="hover:text-red-600 flex items-center gap-2">
+          <i class="fas fa-map-marker-alt"></i> Location
+        </a>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="grid md:grid-cols-2 gap-8 p-4 md:p-12">
+      <!-- Text Section -->
+      <div class="space-y-4">
+        <h1 class="text-2xl md:text-3xl font-bold">
+          LAPER? Yuk, <span class="text-red-600">Pedes-pedesan</span> dulu
+          barang Seblak Cinta Rasa!
+        </h1>
+        <p class="text-gray-600 text-sm md:text-base">
+          Jajan enak ga pake ribet! Pesan dulu, ambil pas udah siap, tanpa
+          nunggu antre. Praktis Cepat dan tetap Pedas nikmat!
+        </p>
+      </div>
+
+      <!-- Image Carousel Section -->
+      <div
+        class="relative h-[200px] md:h-[300px] rounded-lg overflow-hidden bg-gray-200"
+      >
+        <!-- Images -->
+        <div
+          id="carouselImages"
+          class="flex transition-transform duration-500 ease-in-out"
+          style="transform: translateX(0)"
+        >
+        <img
+        src="{{ url_for('static', filename='/images/gambar11.webp') }}"
+        alt="Seblak dish 3"
+        class="object-cover w-full h-full flex-shrink-0"
+      />
+          <img
+          src="{{ url_for('static', filename='/images/gambar3.jpg') }}"
+          alt="Seblak dish 3"
+          class="object-cover w-full h-full flex-shrink-0"
+        />
+          <img
+    src="{{ url_for('static', filename='/images/image3.png') }}"
+    alt="Seblak dish 3"
+    class="object-cover w-full h-full flex-shrink-0"
+  />
+        </div>
+
+        <!-- Navigation Arrows -->
+        <button
+          id="prevSlide"
+          class="absolute top-1/2 -translate-y-1/2 left-4 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <button
+          id="nextSlide"
+          class="absolute top-1/2 -translate-y-1/2 right-4 bg-gray-800 bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="p-4 md:p-12">
+      <h2 class="text-center text-xl md:text-2xl font-semibold mb-6 md:mb-8">
+        Penawaran Unggulan Kami
+      </h2>
+      <div class="bg-red-900 rounded-xl p-4 md:p-6">
+        <div class="grid grid-cols-3 md:grid-cols-5 gap-4">
+          <!-- Card 1 -->
+          <a href="{{ url_for('produk') }}" class="flex flex-col items-center hover:opacity-90 transition">
+            <div
+              class="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden bg-white"
+            >
+              <img
+                src="{{ url_for('static', filename='/images/image.png') }}"
+                alt="Product"
+                class="object-cover w-full h-full"
+              />
+            </div>
+            <span class="text-white text-xs md:text-sm mt-2 text-center">Spaghetti</span>
+          </a>
+          <!-- Card 2 -->
+          <a href="{{ url_for('produk') }}" class="flex flex-col items-center hover:opacity-90 transition">
+            <div
+              class="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden bg-white"
+            >
+              <img
+                src="{{ url_for('static', filename='/images/image.png') }}"
+                alt="Product"
+                class="object-cover w-full h-full"
+              />
+            </div>
+            <span class="text-white text-xs md:text-sm mt-2 text-center">Pizza</span>
+          </a>
+          <!-- Card 3 -->
+          <a href="{{ url_for('produk') }}" class="flex flex-col items-center hover:opacity-90 transition">
+            <div
+              class="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden bg-white"
+            >
+              <img
+                src="{{ url_for('static', filename='/images/image.png') }}"
+                alt="Product"
+                class="object-cover w-full h-full"
+              />
+            </div>
+            <span class="text-white text-xs md:text-sm mt-2 text-center">Burger</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    
+
+    <!-- Kisah Di Balik Section -->
+    <section
+      class="max-w-5xl mx-auto p-6 md:p-12 bg-gray-200 shadow rounded-lg mt-10"
+    >
+      <div class="grid md:grid-cols-2 gap-6 items-center">
+        <!-- Image Section -->
+        <div>
+          <img
+          src="{{ url_for('static', filename='/images/gambar3.jpg') }}"
+          alt="Seblak dish 3"
+          class="object-cover w-full h-full flex-shrink-0"
+        />
+        </div>
+
+        <!-- Text Section -->
+        <div>
+          <h2 class="text-2xl md:text-3xl font-semibold text-red-600 mb-4">
+            Kisah Di Balik SEBLAK Cinta Rasa
+          </h2>
+          <p class="text-gray-700 leading-relaxed text-justify">
+            Seblak Cinta Rasa adalah kisah seorang mahasiswa yang tengah bingung
+            mencari cara untuk memenuhi kebutuhan hidup. Terinspirasi oleh
+            masakan sederhana yang selalu ia buat dengan penuh cinta, ia
+            menciptakan nama itu, meyakini bahwa cinta yang ia tuangkan dalam
+            memasak akan tercermin dalam rasanya. Dengan modal kecil dan
+            semangat besar, ia mulai menjual seblak ke teman-teman kampusnya.
+            Perlahan, rasa unik dan kesederhanaan kisahnya membuat seblaknya
+            dikenal luas. Nama "Seblak Cinta Rasa" menjadi simbol perjuangan,
+            cinta, dan harapan yang ia racik dalam setiap porsinya.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="mt-8 space-y-4">
+      <div class="text-center px-4">
+        <h3 class="font-bold flex items-center justify-center gap-2">
+          <i class="fas fa-clock text-red-600"></i> Jam Operasional: 08:00-22:00
+        </h3>
+      </div>
+      <div class="text-center px-4">
+        <h3 class="font-bold mb-4 flex items-center justify-center gap-2">
+          <i class="fas fa-phone text-red-600"></i> HUBUNGI KAMI
+        </h3>
+        <div class="flex justify-center gap-4">
+          <a
+            href="#"
+            class="hover:opacity-75 transform hover:scale-110 transition-transform duration-300 bg-green-500 p-3 rounded-full text-white"
+          >
+            <i class="fab fa-whatsapp text-xl"></i>
+          </a>
+          <a
+            href="https://www.tiktok.com/@seblakcintarasa?_t=ZS-8sYnsE2Mr6G&_r=1"
+            class="hover:opacity-75 transform hover:scale-110 transition-transform duration-300 bg-black p-3 rounded-full text-white"
+          >
+            <i class="fab fa-tiktok text-xl"></i>
+          </a>
+          <a
+            href="https://www.instagram.com/seblakcintarasa?igsh=MXdvaGhsZzVnZDQ0Mg%3D%3D&utm_source=qr"
+            class="hover:opacity-75 transform hover:scale-110 transition-transform duration-300 bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full text-white"
+          >
+            <i class="fab fa-instagram text-xl"></i>
+          </a>
+        </div>
+      </div>
+      <div class="bg-red-900 text-white p-4 text-center">
+        <p class="flex items-center justify-center gap-2">
+          <i class="far fa-copyright"></i> Copyright@2024 seblak cinta rasa
+        </p>
+      </div>
+    </footer>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>
